@@ -1,0 +1,64 @@
+{
+	"version": "0.0.3",
+	"name": "custom.jmx.custom-activemq",
+	"metricGroup": "custom.jmx.custom-activemq",
+	"type": "JMX",
+	"entity": "PROCESS_GROUP_INSTANCE",
+	"configUI": {
+		"displayName": "Custom ActiveMQ JMX"
+	},
+	"processTypes": [
+		10
+	],
+	"metrics": [{
+		"timeseries": {
+			"key": "AverageEnqueueTime",
+			"unit": "Count",
+			"displayname": "Average enqueue time",
+			"dimensions": [
+				"rx_pid",
+				"destinationName"
+			]
+		},
+		"source": {
+			"domain": "org.apache.activemq",
+			"keyProperties": {
+				"type": "Broker",
+				"brokerName": "*",
+				"destinationType": "Queue",
+				"destinationName": "*"
+			},
+			"allowAdditionalKeys": false,
+			"attribute": "AverageEnqueueTime",
+			"calculateDelta": false,
+			"calculateRate": false,
+			"aggregation": "SUM",
+			"splitting": {
+				"name": "destinationName",
+				"type": "keyProperty",
+				"keyProperty": "destinationName"
+			}
+		}
+	}],
+	"ui": {
+		"keycharts": [{
+			"group": "Custom Queue Metrics",
+			"title": "Average enqueue time",
+			"description": "The average time messages are being enqueued.",
+			"explanation": "* Only dequeued messages are taken into consideration.\n* It measures time from enqueue to dequeue in milliseconds.\n* Metric restarts with the broker.",
+			"link": "",
+			"series": [{
+				"key": "AverageEnqueueTime",
+				"displayname": "Average enqueue time",
+				"aggregation": "avg",
+				"color": "#00a6fb",
+				"seriestype": "line",
+				"rightaxis": false,
+				"stacked": false,
+				"unit": "MilliSecond",
+				"metricexplanation": "The average time messages are being enqueued given in milliseconds."
+			}]
+		}],
+		"charts": []
+	}
+}
