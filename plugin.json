@@ -40,7 +40,7 @@
 				"type": "Broker",
 				"brokerName": "*",
 				"destinationType": "Queue",
-				"destinationName": "test*"
+				"destinationName": "*"
 			},
 			"allowAdditionalKeys": false,
 			"attribute": "QueueSize",
