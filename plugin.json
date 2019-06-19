@@ -1,5 +1,5 @@
 {
-	"version": "0.0.3",
+	"version": "0.0.7",
 	"name": "custom.jmx.custom-activemq",
 	"metricGroup": "custom.jmx.custom-activemq",
 	"type": "JMX",
@@ -12,24 +12,38 @@
 	],
 	"metrics": [{
 		"timeseries": {
-			"key": "AverageEnqueueTime",
+			"key": "QueueSize",
 			"unit": "Count",
-			"displayname": "Average enqueue time",
+			"displayname": "Queue size",
 			"dimensions": [
 				"rx_pid",
 				"destinationName"
 			]
 		},
+		"alert_settings": [
+			{
+				"alert_id": "custom_queue_alert",
+				"event_type": "PERFORMANCE_EVENT",
+				"event_name": "Large queue of unprocessed messages",
+				"description": "The {metricname} of {severity} is {alert_condition} the threshold of {threshold}",
+				"threshold": 0,
+				"alert_condition": "ABOVE",
+				"samples":5,
+				"violating_samples":3,
+				"dealerting_samples":5
+			}
+		
+		],
 		"source": {
 			"domain": "org.apache.activemq",
 			"keyProperties": {
 				"type": "Broker",
 				"brokerName": "*",
 				"destinationType": "Queue",
-				"destinationName": "*"
+				"destinationName": "test*"
 			},
 			"allowAdditionalKeys": false,
-			"attribute": "AverageEnqueueTime",
+			"attribute": "QueueSize",
 			"calculateDelta": false,
 			"calculateRate": false,
 			"aggregation": "SUM",
@@ -41,24 +55,39 @@
 		}
 	}],
 	"ui": {
+		"keymetrics": [{
+			"key": "QueueSize",
+			"aggregation": "max",
+			"mergeaggregation": "max",
+			"displayname": "Largest queue size"
+			}],
 		"keycharts": [{
 			"group": "Custom Queue Metrics",
-			"title": "Average enqueue time",
-			"description": "The average time messages are being enqueued.",
-			"explanation": "* Only dequeued messages are taken into consideration.\n* It measures time from enqueue to dequeue in milliseconds.\n* Metric restarts with the broker.",
+			"title": "Queue Size",
+			"description": "The average queue size.",
+			"explanation": "",
 			"link": "",
 			"series": [{
-				"key": "AverageEnqueueTime",
-				"displayname": "Average enqueue time",
+				"key": "QueueSize",
+				"displayname": "Queue size",
 				"aggregation": "avg",
 				"color": "#00a6fb",
 				"seriestype": "line",
 				"rightaxis": false,
 				"stacked": false,
 				"unit": "MilliSecond",
-				"metricexplanation": "The average time messages are being enqueued given in milliseconds."
+				"metricexplanation": "Total number of messages in the queue/store that have not been ack'd by a consumer."
 			}]
 		}],
-		"charts": []
+		"charts": [{
+			"group": "Custom ActiveMQ Metrics",
+			"title": "Queue Size",
+			"series": [{
+				"key": "QueueSize",
+				"aggregation": "avg",
+				"displayname": "Queue Size",
+				"seriestype": "bar"
+			}]
+		}]
 	}
 }
