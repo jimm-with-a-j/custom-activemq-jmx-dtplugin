@@ -1,5 +1,5 @@
 {
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"name": "custom.jmx.custom-activemq",
 	"metricGroup": "custom.jmx.custom-activemq",
 	"type": "JMX",
@@ -71,11 +71,7 @@
 				"key": "QueueSize",
 				"displayname": "Queue size",
 				"aggregation": "avg",
-				"color": "#00a6fb",
 				"seriestype": "line",
-				"rightaxis": false,
-				"stacked": false,
-				"unit": "MilliSecond",
 				"metricexplanation": "Total number of messages in the queue/store that have not been ack'd by a consumer."
 			}]
 		}],
